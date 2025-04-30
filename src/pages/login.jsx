@@ -104,7 +104,7 @@ function Login() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="Enter your email"
-                className="w-full p-3 text-white placeholder-gray-400 bg-transparent rounded-lg outline-none"
+                className="w-full p-3 text-white bg- bg-transparent rounded-lg outline-none"
               />
             </div>
           </div>
@@ -121,7 +121,7 @@ function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="Enter your password"
-                className="w-full p-3 text-white placeholder-gray-400 bg-transparent rounded-lg outline-none"
+                className="w-full p-3 text-white bg-transparent rounded-lg outline-none"
               />
             </div>
           </div>
@@ -133,7 +133,7 @@ function Login() {
           {/* Submit Button */}
         <div className='flex justify-center items-center'>   <button
             type="submit"
-            className="w-[70%] py-3 mt-4  text-black bg-[#1DB954]  font-semibold rounded-full hover:bg-[#1DB954] focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-[70%] py-3 mt-4  text-black bg-[#1DB954]  font-semibold rounded-full hover:bg-[#1DB954] focus:outline-none focus:ring-2 focus:ring-green-500 cursor-pointer"
           >
             Login
           </button></div>

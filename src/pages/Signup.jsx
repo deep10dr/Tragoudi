@@ -149,7 +149,7 @@ function Signup() {
 
           <div className='flex justify-center items-center'><button
             type="submit"
-            className="w-[60%] py-3 bg-[#1DB954] text-black font-semibold rounded-full mt-4 hover:opacity-90 transition duration-200"
+            className="w-[60%] py-3 bg-[#1DB954] text-black font-semibold rounded-full mt-4 hover:opacity-90 transition duration-200 cursor-pointer"
           >
             Sign Up
           </button></div>

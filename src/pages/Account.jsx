@@ -1,5 +1,16 @@
+import { LogOut } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { FaUser, FaEnvelope, FaShieldAlt, FaCalendarAlt, FaCreditCard, FaEdit, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
+import {
+    FaUser,
+    FaEnvelope,
+    FaShieldAlt,
+    FaCalendarAlt,
+    FaCreditCard,
+    FaEdit,
+    FaSignInAlt,
+    FaUserPlus,
+} from 'react-icons/fa';
+import Swal from 'sweetalert2';
 
 function Account() {
     const [data, setData] = useState(null);
@@ -8,17 +19,23 @@ function Account() {
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'short', day: 'numeric', weekday: 'short' };
         const date = new Date(dateString);
-        const istDate = new Date(date.getTime() + (5.5 * 60 * 60 * 1000));
+        const istDate = new Date(date.getTime() + 5.5 * 60 * 60 * 1000);
         return istDate.toLocaleDateString('en-IN', options).replace(/,/g, '').toUpperCase();
     };
 
     const formatFullDateWithTime = (dateString) => {
-        const options = { 
-            year: 'numeric', month: 'short', day: 'numeric', weekday: 'short', 
-            hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true 
+        const options = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            weekday: 'short',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
         };
         const date = new Date(dateString);
-        const istDate = new Date(date.getTime() + (5.5 * 60 * 60 * 1000));
+        const istDate = new Date(date.getTime() + 5.5 * 60 * 60 * 1000);
         return istDate.toLocaleString('en-IN', options).replace(/,/g, '').toUpperCase();
     };
 
@@ -28,6 +45,23 @@ function Account() {
             setData(JSON.parse(userInfo));
         }
     }, []);
+
+    const handleLogout = () => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will be logged out of your account!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#1db954',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, log me out!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                sessionStorage.removeItem('userInfo');
+                window.location.href = '/login';
+            }
+        });
+    };
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-[#121212] p-6">
@@ -89,24 +123,34 @@ function Account() {
                                             : formatDate(data?.created_at)}
                                     </span>
                                 </div>
+                                <div className="flex flex-col md:flex-row gap-4 w-full">
+                                    <button className="w-full md:w-1/2 bg-[#1db954] hover:bg-[#1ed760] text-black font-bold py-2 rounded-md transition flex items-center justify-center gap-2 cursor-pointer">
+                                        <FaEdit className="h-5 w-5" />
+                                        Edit Profile
+                                    </button>
 
-                                <button className="mt-6 w-full bg-[#1db954] hover:bg-[#1ed760] text-black font-bold py-2 rounded-md transition flex items-center justify-center gap-2">
-                                    <FaEdit className="h-5 w-5" />
-                                    Edit Profile
-                                </button>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="w-full md:w-1/2 bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-md transition flex items-center justify-center gap-2 cursor-pointer"
+                                    >
+                                        <LogOut className="h-5 w-5" />
+                                        Log Out
+                                    </button>
+                                </div>
+
                             </>
                         ) : (
                             <div className="flex gap-4 w-[90%] justify-center items-center">
                                 <button
-                                    className="flex items-center justify-center gap-2 w-full bg-[#1db954] hover:bg-[#1ed760] text-black font-bold py-2 rounded-md transition"
-                                    onClick={() => window.location.href = '/login'}
+                                    className="flex items-center justify-center gap-2 w-full bg-[#1db954] hover:bg-[#1ed760] text-black font-bold py-2 rounded-md transition cursor-pointer"
+                                    onClick={() => (window.location.href = '/login')}
                                 >
                                     <FaSignInAlt className="h-5 w-5" />
                                     Log In
                                 </button>
                                 <button
-                                    className="flex items-center justify-center gap-2 w-full bg-[#1db954] hover:bg-[#1ed760] text-black font-bold py-2 rounded-md transition"
-                                    onClick={() => window.location.href = '/signup'}
+                                    className="flex items-center justify-center gap-2 w-full bg-[#1db954] hover:bg-[#1ed760] text-black font-bold py-2 rounded-md transition cursor-pointer"
+                                    onClick={() => (window.location.href = '/signup')}
                                 >
                                     <FaUserPlus className="h-5 w-5" />
                                     Sign Up

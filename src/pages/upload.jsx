@@ -1,8 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { Loader2, UploadCloud } from 'lucide-react'; // Optional icons for coolness
-
-
+import { Loader2, UploadCloud } from 'lucide-react';
 
 function Upload() {
   const [title, setTitle] = useState('');
@@ -63,14 +61,16 @@ function Upload() {
       setMessage(`❌ Upload failed: ${error.message}`);
     } finally {
       setIsLoading(false);
+      setMessage('');
     }
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-8 bg-gradient-to-tr from-blue-100 via-white to-purple-100 rounded-2xl shadow-2xl mt-8 animate-fadeIn">
-      <h2 className="text-4xl font-extrabold text-center mb-8 text-blue-600 tracking-wide">Upload Your Song 🎵</h2>
+    <div className='w-full h-full md:h-screen  bg-[#121212] flex justify-center items-center p-1 '>
+    <div className="max-w-3xl mx-auto p-8 bg-[#1e1e1e] rounded-2xl shadow-xl  border border-gray-800 w-full">
+      <h2 className="text-4xl font-bold text-center mb-10 text-white">Upload Your Song 🎶</h2>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-8 text-white">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <InputField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
           <InputField label="Movie" value={movie} onChange={(e) => setMovie(e.target.value)} />
@@ -91,7 +91,7 @@ function Upload() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full flex items-center justify-center gap-3 bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-xl text-lg font-semibold transition-all duration-300"
+          className="w-full flex items-center justify-center gap-3 bg-green-500 hover:bg-green-600 text-black font-semibold p-4 rounded-xl text-lg transition-all duration-300"
         >
           {isLoading ? <Loader2 className="animate-spin" /> : <UploadCloud />}
           {isLoading ? 'Uploading...' : 'Upload'}
@@ -99,23 +99,24 @@ function Upload() {
       </form>
 
       {message && (
-        <div className={`mt-6 p-4 rounded-xl text-center ${message.startsWith('✅') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+        <div className={`mt-6 p-4 rounded-xl text-center ${message.startsWith('✅') ? 'bg-green-800 text-green-300' : 'bg-red-800 text-red-300'}`}>
           {message}
         </div>
       )}
     </div>
+    </div>
   );
 }
 
-// Custom components
+// Reusable components
 const InputField = ({ label, value, onChange }) => (
   <div>
-    <label className="block text-gray-700 font-medium mb-2">{label}</label>
+    <label className="block text-sm text-green-400 mb-2">{label}</label>
     <input
       type="text"
       value={value}
       onChange={onChange}
-      className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-300 transition"
+      className="w-full p-3 rounded-md bg-[#1e1e1e] border border-gray-600 text-white focus:ring-2 focus:ring-green-400"
       required
     />
   </div>
@@ -123,11 +124,11 @@ const InputField = ({ label, value, onChange }) => (
 
 const SelectField = ({ label, value, setValue, options }) => (
   <div>
-    <label className="block text-gray-700 font-medium mb-2">{label}</label>
+    <label className="block text-sm text-green-400 mb-2">{label}</label>
     <select
       value={value}
       onChange={(e) => setValue(e.target.value)}
-      className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-300 transition"
+      className="w-full p-3 rounded-md bg-[#1e1e1e] border border-gray-600 text-white focus:ring-2 focus:ring-green-400"
       required
     >
       <option value="">Select {label}</option>
@@ -138,13 +139,13 @@ const SelectField = ({ label, value, setValue, options }) => (
 
 const UploadBox = ({ label, accept, name, onChange }) => (
   <div>
-    <label className="block text-gray-700 font-medium mb-2">{label}</label>
+    <label className="block text-sm text-green-400 mb-2">{label}</label>
     <input
       type="file"
       name={name}
       accept={accept}
       onChange={onChange}
-      className="w-full p-3 rounded-lg border border-gray-300"
+      className="w-full p-3 rounded-md bg-[#1e1e1e] border border-gray-600 text-white"
       required
     />
   </div>
@@ -152,7 +153,9 @@ const UploadBox = ({ label, accept, name, onChange }) => (
 
 const DragDropImageBox = ({ isDragging, setIsDragging, setImageFile, imageFile, imageInputRef }) => (
   <div
-    className={`w-full border-2 p-6 rounded-lg text-center cursor-pointer ${isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300'}`}
+    className={`w-full border-2 rounded-md text-center p-6 cursor-pointer transition ${
+      isDragging ? 'border-green-400 bg-green-900/20' : 'border-gray-600 bg-[#1e1e1e]'
+    }`}
     onClick={() => imageInputRef.current?.click()}
     onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
     onDragLeave={() => setIsDragging(false)}
@@ -166,7 +169,7 @@ const DragDropImageBox = ({ isDragging, setIsDragging, setImageFile, imageFile, 
     {imageFile ? (
       <div>
         <img src={URL.createObjectURL(imageFile)} alt="preview" className="w-24 h-24 object-cover mx-auto mb-2 rounded-lg" />
-        <p className="text-green-600 font-semibold">{imageFile.name}</p>
+        <p className="text-green-300 font-semibold">{imageFile.name}</p>
       </div>
     ) : (
       <p className="text-gray-400 font-medium">Drag & Drop or Click to Upload Image</p>
@@ -180,6 +183,7 @@ const DragDropImageBox = ({ isDragging, setIsDragging, setImageFile, imageFile, 
       className="hidden"
     />
   </div>
+  
 );
 
 export default Upload;
