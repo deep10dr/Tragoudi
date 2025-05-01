@@ -17,6 +17,7 @@ const Controller = ({ songs }) => {
   const [isRepeating, setIsRepeating] = useState(false);
   const [repeatPlaylist, setRepeatPlaylist] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   const progressRef = useRef();
   const audioRef = useRef(null);
@@ -129,8 +130,28 @@ const Controller = ({ songs }) => {
     );
   }
 
-  return (
-    <div className="fixed bottom-0 left-0 right-0 p-4 text-white z-50 bg-[#222] shadow-2xl flex">
+  
+    return (
+      <div className={`fixed bottom-0 bg-[#222] w-full transition-all duration-500 ${showInfo ? 'h-80 md:h-[300px]' : 'h-[103px]'} z-9999`}>
+      
+      {showInfo && (
+  <div className="absolute top-5 left-0 right-0 w-full h-auto  flex  flex-row items-center gap-4 px-4">
+    <div className="flex-shrink-0">
+      <img src={currentSong?.image_url} alt="" className="h-40 w-40 object-cover rounded-lg shadow-md" />
+    </div>
+    <div className="text-white w-full overflow-y-auto max-h-[200px]">
+      <p><strong>Song Name:</strong> {currentSong.title}</p>
+      <p><strong>Movie:</strong> {currentSong.movie}</p>
+      <p><strong>Year:</strong> {currentSong.year}</p>
+      <p><strong>Artist:</strong> {currentSong.artist}</p>
+      <p><strong>Genre:</strong> {currentSong.genre}</p>
+      <p><strong>Language:</strong> {currentSong.language}</p>
+    </div>
+  </div>
+)}
+
+  
+  <div className="absolute bottom-0 left-0 right-0 p-4 text-white z-40 bg-[#222] shadow-2xl flex">
       {/* Seek Bar */}
       <div className="flex flex-col w-[90%]">
         <div className="flex justify-center items-center">
@@ -192,7 +213,8 @@ const Controller = ({ songs }) => {
         <img
           src={currentSong?.image_url}
           alt={currentSong?.title}
-          className="w-15 h-15 object-cover rounded-lg shadow-lg"
+          className="w-15 h-15 object-cover rounded-lg shadow-lg cursor-pointer"
+          onClick={() => setShowInfo(!showInfo)}
         />
         <div className="hidden sm:block">
           <p className="font-semibold truncate w-40">{currentSong?.title}</p>
@@ -200,7 +222,10 @@ const Controller = ({ songs }) => {
         </div>
       </div>
     </div>
-  );
-};
+      </div>
+    );
+  };
+  
+
 
 export default Controller;
