@@ -66,8 +66,8 @@ const Controller = ({ songs }) => {
   };
 
   const handleNext = () => {
-    const randomIndex = Math.floor(Math.random() * songs.length);
-    setCurrentSongIndex(randomIndex);
+    const nextIndex =  (currentSongIndex + 1 + songs.length) % songs.length;
+    setCurrentSongIndex(nextIndex);
   };
 
   const toggleRepeat = () => {
