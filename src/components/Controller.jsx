@@ -140,12 +140,12 @@ const Controller = ({ songs }) => {
       <img src={currentSong?.image_url} alt="" className="h-40 w-40 object-cover rounded-lg shadow-md" />
     </div>
     <div className="text-white w-full overflow-y-auto max-h-[200px]">
-      <p><strong>Song Name:</strong> {currentSong.title}</p>
-      <p><strong>Movie:</strong> {currentSong.movie}</p>
-      <p><strong>Year:</strong> {currentSong.year}</p>
-      <p><strong>Artist:</strong> {currentSong.artist}</p>
-      <p><strong>Genre:</strong> {currentSong.genre}</p>
-      <p><strong>Language:</strong> {currentSong.language}</p>
+      <p><strong className='text-[#1DB954]'>Song Name:</strong> {currentSong.title}</p>
+      <p><strong className='text-[#1DB954]'>Movie:</strong> {currentSong.movie}</p>
+      <p><strong className='text-[#1DB954]'>Year:</strong> {currentSong.year}</p>
+      <p><strong className='text-[#1DB954]'>Artist:</strong> {currentSong.artist}</p>
+      <p><strong className='text-[#1DB954]'>Genre:</strong> {currentSong.genre}</p>
+      <p><strong className='text-[#1DB954]'>Language:</strong> {currentSong.language}</p>
     </div>
   </div>
 )}
