@@ -208,7 +208,7 @@ export default function Dashboard() {
         {/* Genres Section */}
         <section className="relative">
           <h2 className="text-2xl font-bold mb-4">Genres</h2>
-          <div className='flex overflow-x-auto gap-4 pb-2 scrollbar-hide'>
+          <div className='flex overflow-x-auto gap-4 pb-2 scrollbar-hide scrollbar-width-0'>
             {genreList.map((genre, idx) => (
               <div
                 key={idx}

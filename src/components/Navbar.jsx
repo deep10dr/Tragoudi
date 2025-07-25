@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import { FaHome, FaHeart, FaUser, FaSearch, FaHeadphones, FaBars } from 'react-icons/fa';
 import { supabase } from '../lib/supabaseClient';
 import { IoMdCloudUpload } from "react-icons/io";
-
+import Lottie from 'lottie-react';
+import Data from '../assets/music.json';
 function Navbar({ onSongSelect }) {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [admin_user,Set_admin_user]= useState(false);
+  const [admin_user, Set_admin_user] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -43,23 +44,25 @@ function Navbar({ onSongSelect }) {
     setSearch('');
     setSearchResults([]);
   }
-  useState(()=>{
-    function getPermisson(){
+  useState(() => {
+    function getPermisson() {
       const value = sessionStorage.getItem("userInfo");
-      if(value && JSON.parse(value).role =='admin' ){
-            Set_admin_user(true);
+      if (value && JSON.parse(value).role == 'admin') {
+        Set_admin_user(true);
       }
       else Set_admin_user(false);
     }
     getPermisson();
-  },[]);
+  }, []);
 
   return (
     <nav className="text-white bg-[#222] p-4 shadow-md">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="text-2xl font-extrabold flex items-center gap-2">
-          <FaHeadphones className="text-emerald-500 text-3xl" />
+
+          <div className='w-15 h-15'>
+            <Lottie animationData={Data} loop={true} /></div>
           <Link to="/dashboard" className="hover:text-emerald-500 text-lg font-extrabold">
             Tragoudi
           </Link>
@@ -86,11 +89,11 @@ function Navbar({ onSongSelect }) {
           <Link to="/account" className="flex items-center gap-2 hover:text-emerald-500 font-bold">
             <FaUser className="text-xl" /> Account
           </Link>
-          { admin_user && 
-           <Link to="/upload" className="flex items-center gap-2 hover:text-emerald-500 font-bold">
-           <IoMdCloudUpload className='text-xl' /> Upload
-         </Link>
-            }
+          {admin_user &&
+            <Link to="/upload" className="flex items-center gap-2 hover:text-emerald-500 font-bold">
+              <IoMdCloudUpload className='text-xl' /> Upload
+            </Link>
+          }
 
           {/* Search Bar */}
           <div className="relative flex flex-col items-center">
@@ -98,9 +101,8 @@ function Navbar({ onSongSelect }) {
               <FaSearch className="absolute left-3 text-emerald-500" />
               <input
                 type="text"
-                className={`pl-10 py-2 bg-black/50 text-white rounded-lg transition-all duration-300 ease-in-out ${
-                  isSearchFocused ? 'w-60' : 'w-40'
-                } focus:outline-none`}
+                className={`pl-10 py-2 bg-black/50 text-white rounded-lg transition-all duration-300 ease-in-out ${isSearchFocused ? 'w-60' : 'w-40'
+                  } focus:outline-none`}
                 placeholder="Search"
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setIsSearchFocused(false)}
@@ -124,7 +126,7 @@ function Navbar({ onSongSelect }) {
               </div>
             )}
           </div>
-         
+
         </div>
       </div>
 
@@ -139,11 +141,11 @@ function Navbar({ onSongSelect }) {
         <Link to="/account" className="flex items-center gap-2 hover:text-emerald-500 py-2">
           <FaUser className="hover:text-emerald-500 text-xl" /> Account
         </Link>
-        { admin_user && 
-           <Link to="/upload" className="flex items-center gap-2 hover:text-emerald-500 py-2">
+        {admin_user &&
+          <Link to="/upload" className="flex items-center gap-2 hover:text-emerald-500 py-2">
             <IoMdCloudUpload className=' text-e  text-xl hover:text-emerald-500' /> Upload
-         </Link>
-            }
+          </Link>
+        }
 
         {/* Mobile Search */}
         <div className="relative flex flex-col items-center mt-4">
@@ -151,9 +153,8 @@ function Navbar({ onSongSelect }) {
             <FaSearch className="absolute left-3 text-emerald-500" />
             <input
               type="text"
-              className={`pl-10 py-2 bg-black/50 text-white rounded-lg transition-all duration-300 ease-in-out ${
-                isSearchFocused ? 'w-full' : 'w-40'
-              } focus:outline-none`}
+              className={`pl-10 py-2 bg-black/50 text-white rounded-lg transition-all duration-300 ease-in-out ${isSearchFocused ? 'w-full' : 'w-40'
+                } focus:outline-none`}
               placeholder="Search"
               onFocus={() => setIsSearchFocused(true)}
               onBlur={() => setIsSearchFocused(false)}
