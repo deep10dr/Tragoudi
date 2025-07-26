@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import Controller from '../components/Controller';
 import { supabase } from '../lib/supabaseClient';
 import PlayOverlay from '../components/PlayOverlay';
-import { ChevronLeft, ChevronRight } from 'lucide-react'; // or any icons you use
+import { ChevronLeft, ChevronRight, Video } from 'lucide-react'; // or any icons you use
 
 const genreList = [
   { name: 'Love', img: '/images/love.jpg' },
@@ -23,12 +23,14 @@ const genreList = [
 ];
 
 const languageList = [
-  { name: 'Tamil', img: '/images/tamil.jpg' },
-  { name: 'English', img: '/images/english.jpg' },
-  { name: 'Malayalam', img: '/images/malayalam.jpg' },
-  { name: 'Hindi', img: '/images/hindi.jpg' },
-  { name: 'Telugu', img: '/images/telugu.jpg' },
-  { name: 'Other', img: '/images/album.jpg' },
+  { name: 'Tamil', img: 'https://res.cloudinary.com/dd8t9vrps/video/upload/v1753511269/tamil_nopz5a.mp4' },
+  { name: 'English', img: 'https://res.cloudinary.com/dd8t9vrps/video/upload/v1753511250/english_gzzx96.mp4' },
+  { name: 'Malayalam', img: 'https://res.cloudinary.com/dd8t9vrps/video/upload/v1753519746/malayalam_jyg6vg.mp4' },
+  {
+    name: 'Hindi', img: 'https://res.cloudinary.com/dd8t9vrps/video/upload/hindhi_fjoquc.mp4'
+  },
+  { name: 'Telugu', img: 'https://res.cloudinary.com/dd8t9vrps/video/upload/v1753520091/telugu_oh2xnf.mp4' },
+  { name: 'Other', img: 'https://res.cloudinary.com/dd8t9vrps/video/upload/v1753511269/other_qryjbo.mp4' },
 ];
 
 const yearList = [
@@ -48,6 +50,7 @@ export default function Dashboard() {
   const scrollRef = useRef(null);
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(false);
+  const videoRefs = useRef([]);
 
   useEffect(() => {
     checkScroll(); // check initially if needed
@@ -166,20 +169,43 @@ export default function Dashboard() {
             {languageList.map((lang, idx) => (
               <div
                 key={idx}
-                className="relative min-w-[120px] rounded-lg overflow-hidden group md:h-36 md:w-36 h-28 w-24 cursor-pointer bg-gray-800 "
-                onMouseEnter={() => handleMouseEnter(`language-${idx}`)}
-                onMouseLeave={handleMouseLeave}
+                className="relative min-w-[120px] rounded-lg overflow-hidden group md:h-36 md:w-36 h-28 w-24 cursor-pointer bg-gray-800"
+                onMouseEnter={() => {
+                  setHovered(`language-${idx}`);
+                  videoRefs.current[idx]?.play();
+                }}
+                onMouseLeave={() => {
+                  setHovered(null);
+                  videoRefs.current[idx]?.pause();
+                }}
+                onTouchStart={() => {
+                  setHovered(`language-${idx}`);
+                  videoRefs.current[idx]?.play();
+                }}
+                onTouchCancel={() => {
+                  // In case the touch gets interrupted (like scrolling or context switch)
+                  setHovered(null);
+                  videoRefs.current[idx]?.pause();
+                }}
+
+
                 onClick={() => handlechange('language', lang.name)}
               >
-                <img src={lang.img} alt={lang.name} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-
+                <video
+                  ref={(el) => (videoRefs.current[idx] = el)}
+                  src={lang.img}
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
                 <PlayOverlay isVisible={hovered === `language-${idx}`} />
-
                 <div className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent p-2 text-center">
                   <p className="text-sm font-medium">{lang.name}</p>
                 </div>
               </div>
             ))}
+
           </div>
         </section>
 
@@ -208,7 +234,7 @@ export default function Dashboard() {
         {/* Genres Section */}
         <section className="relative">
           <h2 className="text-2xl font-bold mb-4">Genres</h2>
-          <div className='flex overflow-x-auto gap-4 pb-2 scrollbar-hide scrollbar-width-0'>
+          <div className='flex overflow-x-auto gap-4 pb-2 scrollbar-hide md:grid md:grid-cols-9' >
             {genreList.map((genre, idx) => (
               <div
                 key={idx}
